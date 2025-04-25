@@ -1,5 +1,6 @@
 
 
+
 namespace keepr.Repositories;
 
 public class VaultsRepository
@@ -48,5 +49,24 @@ public class VaultsRepository
       return vault;
     }, new { vaultId }).SingleOrDefault();
     return vault;
+  }
+
+  internal void EditVault(Vault vault)
+  {
+    string sql = @"
+    UPDATE vaults
+    SET 
+    name = @Name,
+    description = @Description,
+    img = @Img,
+    is_private = @IsPrivate
+    WHERE id = @Id LIMIT 1;";
+
+    int rowsAffected = _db.Execute(sql, vault);
+
+    if (rowsAffected != 1)
+    {
+      throw new Exception(rowsAffected + " rows were affected and that is bad");
+    }
   }
 }

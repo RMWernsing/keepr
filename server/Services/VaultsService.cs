@@ -1,5 +1,6 @@
 
 
+
 namespace keepr.Services;
 
 public class VaultsService
@@ -19,6 +20,29 @@ public class VaultsService
   internal Vault GetVaultById(int vaultId)
   {
     Vault vault = _repository.GetVaultByid(vaultId);
+
+    if (vault == null)
+    {
+      throw new Exception("Invalid ID: " + vaultId);
+    }
     return vault;
+  }
+
+  internal Vault EditVault(int vaultId, Vault vaultData, Account userInfo)
+  {
+    Vault vault = GetVaultById(vaultId);
+
+    if (vault.CreatorId != userInfo.Id)
+    {
+      throw new Exception($"YOU CANNOT EDIT SOMEONE ELSES VAULT, {userInfo.Name.ToUpper()}!!!");
+    }
+    vault.Name = vaultData.Name ?? vault.Name;
+    vault.Description = vaultData.Description ?? vault.Description;
+    vault.Img = vaultData.Img ?? vault.Img;
+    vault.IsPrivate = vaultData.IsPrivate ?? vault.IsPrivate;
+
+    _repository.EditVault(vault);
+    return vault;
+
   }
 }
