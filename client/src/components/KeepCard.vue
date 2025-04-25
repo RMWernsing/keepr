@@ -13,7 +13,7 @@ defineProps({
   <div class="mb-3 position-relative image-container">
     <img :src="keep.img" :alt="'An image of ' + keep.name" class="w-100 rounded shadow-lg image-container-img">
     <span class="overlay-text fw-bold text-light">{{ keep.name }}</span>
-    <img class="overlay-img" :src="keep.creator.picture" alt="">
+    <img class="overlay-img d-none d-md-block" :src="keep.creator.picture" alt="">
   </div>
 </template>
 
