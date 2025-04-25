@@ -52,4 +52,17 @@ public class KeepsService
     return keep;
 
   }
+
+  internal string DeleteKeep(int keepId, Account userInfo)
+  {
+    Keep keep = GetKeepById(keepId);
+
+    if (keep.CreatorId != userInfo.Id)
+    {
+      throw new Exception($"YOU CANNOT DELETE SOMEONE ELSES KEEP, {userInfo.Name.ToUpper()}!!!");
+    }
+
+    _repository.DeleteKeep(keepId);
+    return keep.Name + " has been deleted.";
+  }
 }

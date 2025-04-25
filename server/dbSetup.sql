@@ -41,5 +41,6 @@ CREATE TABLE vault_keeps(
 ALTER TABLE accounts ADD cover_img VARCHAR(2000);
 SELECT * FROM accounts;
 SELECT * FROM keeps;
+SELECT * FROM vaults;
 
 DROP TABLE keeps;
