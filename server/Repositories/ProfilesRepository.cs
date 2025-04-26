@@ -1,5 +1,6 @@
 
 
+
 namespace keepr.Repositories;
 
 public class ProfilesRepository
@@ -35,5 +36,24 @@ public class ProfilesRepository
       return keep;
     }, new { profileId }).ToList();
     return keeps;
+  }
+
+  internal List<Vault> GetVaultsForProfile(string profileId)
+  {
+    string sql = @"
+        SELECT 
+    vaults.*,
+    accounts.*
+    FROM 
+    vaults
+    INNER JOIN accounts ON accounts.id = vaults.creator_id
+    WHERE vaults.creator_id = @profileId;";
+
+    List<Vault> vaults = _db.Query(sql, (Vault vault, Profile account) =>
+    {
+      vault.Creator = account;
+      return vault;
+    }, new { profileId }).ToList();
+    return vaults;
   }
 }

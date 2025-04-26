@@ -41,4 +41,18 @@ public class ProfilesController : ControllerBase
       return BadRequest(exception.Message);
     }
   }
+
+  [HttpGet("{profileId}/vaults")]
+  public ActionResult<List<Vault>> GetVaultsForProfile(string profileId)
+  {
+    try
+    {
+      List<Vault> vaults = _profilesService.GetVaultsForProfile(profileId);
+      return Ok(vaults);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
 }

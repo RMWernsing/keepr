@@ -1,5 +1,6 @@
 
 
+
 namespace keepr.Services;
 
 public class ProfilesService
@@ -20,5 +21,11 @@ public class ProfilesService
   {
     List<Keep> keeps = _repository.GetKeepsForProfile(profileId);
     return keeps;
+  }
+
+  internal List<Vault> GetVaultsForProfile(string profileId)
+  {
+    List<Vault> vaults = _repository.GetVaultsForProfile(profileId);
+    return vaults;
   }
 }
