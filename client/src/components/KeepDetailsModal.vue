@@ -17,9 +17,9 @@ const keep = computed(() => AppState.activeKeep)
         <div class="modal-body p-0">
           <div class="container">
             <div class="row">
-              <div :style="{ backgroundImage: `url(${keep?.img})` }" class="col-md-6 img-height rounded-start">
+              <div :style="{ backgroundImage: `url(${keep?.img})` }" class="col-md-5 img-height rounded-start">
               </div>
-              <div class="col-md-6 position-relative">
+              <div class="col-md-7 position-relative">
                 <div class="d-flex justify-content-between mt-3">
                   <div>
                   </div>
@@ -37,7 +37,7 @@ const keep = computed(() => AppState.activeKeep)
                     <p class="px-3 mt-5 mobile-margin">{{ keep?.description }}</p>
                   </div>
                 </div>
-                <div class="position-absolute form-position d-flex justify-content-between">
+                <div class="position-absolute form-position d-flex justify-content-between flex-grow-1">
                   <form>
                     <div class="d-flex gap-2">
                       <select class="form-select w-50" aria-label="Default select example">
@@ -49,9 +49,12 @@ const keep = computed(() => AppState.activeKeep)
                       <button class="btn btn-primary">Save</button>
                     </div>
                   </form>
-                  <div>
+                  <div class="d-flex gap-2 flex-wrap">
                     <img class="profile-img" :src="keep?.creator.picture"
                       :alt="`Profile picture for ${keep?.creator.name}`">
+                    <span class="profile-name">{{ keep?.creator.name }}</span>
+                  </div>
+                  <div>
                   </div>
                 </div>
               </div>
@@ -80,8 +83,18 @@ const keep = computed(() => AppState.activeKeep)
 }
 
 .profile-img {
-  height: 2rem;
-  right: 10px;
+  height: 2.5rem;
+  top: 10px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-name {
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 @media (max-width: 769px) {

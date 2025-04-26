@@ -76,6 +76,7 @@ async function getKeepById(keepId) {
   aspect-ratio: 1/1;
   border-radius: 50%;
   height: 3rem;
+  object-fit: cover;
 }
 
 @media(max-width: 769px) {
