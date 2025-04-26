@@ -5,6 +5,7 @@ export class Keep {
     this.id = data.id
     this.createdAt = new Date(data.createdAt)
     this.updatedAt = new Date(data.updatedAt)
+    this.description = data.description
     this.creator = new Profile(data.creator)
     this.creatorId = data.creatorId
     this.img = data.img

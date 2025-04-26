@@ -2,6 +2,7 @@
 import { AppState } from '@/AppState.js';
 import Example from '@/components/Example.vue';
 import KeepCard from '@/components/KeepCard.vue';
+import KeepDetailsModal from '@/components/KeepDetailsModal.vue';
 import { keepsService } from '@/services/KeepsService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
@@ -34,10 +35,10 @@ async function getAllKeeps() {
             <KeepCard :keep="keep" />
           </div>
         </div>
-        <!-- <img :src="keep.img" alt="" class="w-100"> -->
       </div>
     </div>
   </section>
+  <KeepDetailsModal />
 </template>
 
 <style scoped lang="scss">
