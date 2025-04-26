@@ -49,11 +49,15 @@ const keep = computed(() => AppState.activeKeep)
                       <button class="btn btn-primary">Save</button>
                     </div>
                   </form>
-                  <div class="d-flex gap-2 flex-wrap">
-                    <img class="profile-img" :src="keep?.creator.picture"
-                      :alt="`Profile picture for ${keep?.creator.name}`">
-                    <span class="profile-name">{{ keep?.creator.name }}</span>
-                  </div>
+                  <!-- <RouterLink :to="{ name: 'Album Details', params: { albumId: album.id } }" -->
+                  <RouterLink v-if="keep" :to="{ name: 'Profile', params: { profileId: keep?.creator.id } }">
+                    <div :title="`navigate to ${keep.creator.name}'s profile page'`" data-bs-dismiss="modal"
+                      class="d-flex gap-2 flex-wrap no-underline">
+                      <img class="profile-img" :src="keep?.creator.picture"
+                        :alt="`Profile picture for ${keep?.creator.name}`">
+                      <span class="profile-name text-dark">{{ keep?.creator.name }}</span>
+                    </div>
+                  </RouterLink>
                   <div>
                   </div>
                 </div>
@@ -95,6 +99,10 @@ const keep = computed(() => AppState.activeKeep)
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+a {
+  text-decoration: none;
 }
 
 @media (max-width: 769px) {
