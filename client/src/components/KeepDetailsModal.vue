@@ -10,6 +10,7 @@ const keep = computed(() => AppState.activeKeep)
 
 <template>
   <!-- Modal -->
+  <!-- TODO fix the styling of the whole modal. it doesn't look great ☹️ -->
   <div class="modal fade" id="keepDetailsModal" tabindex="-1" aria-labelledby="keepDetailsModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-xl modal-fullscreen-md-down">

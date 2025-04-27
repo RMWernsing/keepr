@@ -1,5 +1,6 @@
 <script setup>
 import { AppState } from '@/AppState.js';
+import KeepCard from '@/components/KeepCard.vue';
 import { profilesService } from '@/services/ProfilesService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
@@ -10,10 +11,12 @@ const route = useRoute()
 
 const profile = computed(() => AppState.activeProfile)
 const vaults = computed(() => AppState.vaults)
+const keeps = computed(() => AppState.profileKeeps)
 
 onMounted(() => {
   getProfile()
   getProfileVaults()
+  getProfileKeeps()
 })
 
 async function getProfile() {
@@ -37,12 +40,23 @@ async function getProfileVaults() {
     logger.error('COULD NOT GET KEEPS', error)
   }
 }
+
+async function getProfileKeeps() {
+  try {
+    const profileId = route.params.profileId
+    profilesService.getProfileKeeps(profileId)
+  }
+  catch (error) {
+    Pop.error(error, 'Could not get profiles keeps')
+    logger.error('COULD NOT GET PROFILES KEEPS', error)
+  }
+}
 </script>
 
 
 <template>
   <!-- TODO loading page for when data is taking a while to load in and to handle ghost data -->
-  <section class="container mt-5">
+  <section v-if="profile" class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-12 col-lg-8 col-sm-12 position-relative">
         <div class="">
@@ -62,12 +76,24 @@ async function getProfileVaults() {
         </div>
       </div>
       <div class="col-12">
-        <div class="row">
-          <div v-for="vault in vaults" :key="vault.id" class="col-lg-3 col-md-4 col-sm-6 position-relative">
+        <div class="row mt-5">
+          <div class="col-12">
+            <h2 class="mb-5">Vaults</h2>
+          </div>
+          <div v-for="vault in vaults" :key="vault.id" class="col-lg-3 col-md-4 col-sm-6 position-relative mb-1">
             <div class="mb-4">
               <img class="w-100 vault-img rounded" :src="vault.img" :alt="`image for the ${vault.name} vault`">
             </div>
             <p class="position-absolute vault-name fs-5 fw-bold">{{ vault.name }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <h2 class="mb-5">Keeps</h2>
+        <div class="masonry-container">
+          <div v-for="keep in keeps" :key="keep.id">
+            <!-- <KeepCard :keep="keep" /> -->
+            <KeepCard :keep="keep" />
           </div>
         </div>
       </div>
@@ -106,5 +132,20 @@ async function getProfileVaults() {
   left: 21px;
   color: aliceblue;
   text-shadow: 1px 1px 5px black;
+}
+
+.masonry-container {
+  columns: 300px;
+}
+
+@media(max-width: 769px) {
+  .masonry-container {
+    columns: 150px
+  }
+}
+
+.masonry-container>* {
+  display: inline-block;
+  break-inside: avoid;
 }
 </style>
