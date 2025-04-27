@@ -1,4 +1,5 @@
 
+
 namespace keepr.Services;
 
 public class AccountService
@@ -35,6 +36,7 @@ public class AccountService
     Account original = GetAccount(accountId);
     original.Name = editData.Name ?? editData.Name;
     original.Picture = editData.Picture ?? editData.Picture;
+    original.CoverImg = editData.CoverImg ?? original.CoverImg;
     return _repo.Edit(original);
   }
 
@@ -43,4 +45,27 @@ public class AccountService
     List<Vault> vaults = _repo.GetMyVaults(userId);
     return vaults;
   }
+
+  internal Account EditAccount(Account userInfo, Account accountData)
+  {
+    Account account = GetAccount(userInfo.Id);
+    account.Name = accountData.Name ?? account.Name;
+    account.Picture = accountData.Picture ?? account.Picture;
+    account.CoverImg = accountData.CoverImg ?? account.CoverImg;
+
+    _repo.EditAccount(account);
+    return account;
+  }
+
+  // internal Task<Account> EditAccount(Account userInfo, Account profileData)
+  // {
+  //   Account profile = GetAccount(userInfo.Id);
+
+  //   profile.Name = profileData.Name ?? profile.Name;
+  //   profile.Picture = profileData.Picture ?? profile.Picture;
+  //   profile.CoverImg = profileData.CoverImg ?? profile.CoverImg;
+
+  //   _repo.EditAccount(profile);
+  //   return profile;
+  // }
 }

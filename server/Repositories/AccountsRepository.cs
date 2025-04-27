@@ -1,4 +1,6 @@
 
+
+
 namespace keepr.Repositories;
 
 public class AccountsRepository
@@ -64,5 +66,35 @@ public class AccountsRepository
     }, new { userId }).ToList();
     return vaults;
   }
+
+  internal Account EditAccount(Account account)
+  {
+    string sql = @"
+    UPDATE accounts
+    SET 
+    name = @Name,
+    picture = @Picture,
+    cover_img = @CoverImg
+    WHERE id = @Id
+    ;";
+
+    Account updatedAccount = _db.Query<Account>(sql, account).SingleOrDefault();
+    return updatedAccount;
+  }
+
+  // internal Account EditAccount(Account profile)
+  // {
+  //   string sql = @"
+  //   UPDATE accounts
+  //   SET 
+  //   name = @Name,
+  //   picture = @Picture,
+  //   cover_img = @CoverImg
+  //   WHERE id = @Id
+  //   ;";
+
+  //   Account updatedProfile = _db.Query<Account>(sql, profile).SingleOrDefault();
+  //   return updatedProfile;
+  // }
 }
 
