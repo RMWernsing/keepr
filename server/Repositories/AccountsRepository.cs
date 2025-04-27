@@ -82,19 +82,5 @@ public class AccountsRepository
     return updatedAccount;
   }
 
-  // internal Account EditAccount(Account profile)
-  // {
-  //   string sql = @"
-  //   UPDATE accounts
-  //   SET 
-  //   name = @Name,
-  //   picture = @Picture,
-  //   cover_img = @CoverImg
-  //   WHERE id = @Id
-  //   ;";
-
-  //   Account updatedProfile = _db.Query<Account>(sql, profile).SingleOrDefault();
-  //   return updatedProfile;
-  // }
 }
 

@@ -1,19 +1,32 @@
 <script setup>
+import { AppState } from '@/AppState.js';
 import { profilesService } from '@/services/ProfilesService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
+const account = computed(() => AppState.account)
 
 const editableProfileData = ref({
   name: '',
   picture: '',
-  coverImg: ''
+  coverImg: '',
+  id: account.value.id
 })
 
 async function editProfile() {
   try {
+    if (editableProfileData.value.name == '') {
+      editableProfileData.value.name = null
+    }
+    if (editableProfileData.value.picture == '') {
+      editableProfileData.value.picture = null
+    }
+    if (editableProfileData.value.coverImg == '') {
+      editableProfileData.value.coverImg = null
+    }
     await profilesService.editProfile(editableProfileData.value)
+
   }
   catch (error) {
     Pop.error(error, 'Could not edit account')
@@ -35,7 +48,7 @@ async function editProfile() {
         </div>
         <div class="modal-body">
           <form>
-            <form>
+            <form @submit.prevent="editProfile()">
               <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
                 <input v-model="editableProfileData.name" type="text" class="form-control" id="name"

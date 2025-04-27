@@ -43,21 +43,6 @@ public class AccountController : ControllerBase
     }
   }
 
-  // [HttpPut]
-  // public async Task<ActionResult<Account>> EditAccount([FromBody] Account profileData)
-  // {
-  //   try
-  //   {
-  //     Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
-  //     Account profile = _accountService.EditAccount(userInfo, profileData);
-  //     return Ok(profile);
-  //   }
-  //   catch (Exception e)
-  //   {
-  //     return BadRequest(e.Message);
-  //   }
-  // }
-
   [HttpPut]
   public async Task<ActionResult<Account>> EditAccount([FromBody] Account accountData)
   {

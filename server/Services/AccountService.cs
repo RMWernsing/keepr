@@ -57,15 +57,4 @@ public class AccountService
     return account;
   }
 
-  // internal Task<Account> EditAccount(Account userInfo, Account profileData)
-  // {
-  //   Account profile = GetAccount(userInfo.Id);
-
-  //   profile.Name = profileData.Name ?? profile.Name;
-  //   profile.Picture = profileData.Picture ?? profile.Picture;
-  //   profile.CoverImg = profileData.CoverImg ?? profile.CoverImg;
-
-  //   _repo.EditAccount(profile);
-  //   return profile;
-  // }
 }
