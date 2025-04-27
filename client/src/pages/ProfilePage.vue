@@ -1,6 +1,7 @@
 <script setup>
 import { AppState } from '@/AppState.js';
 import KeepCard from '@/components/KeepCard.vue';
+import KeepDetailsModal from '@/components/KeepDetailsModal.vue';
 import { profilesService } from '@/services/ProfilesService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
@@ -11,7 +12,7 @@ const route = useRoute()
 
 const profile = computed(() => AppState.activeProfile)
 const vaults = computed(() => AppState.vaults)
-const keeps = computed(() => AppState.profileKeeps)
+const keeps = computed(() => AppState.keeps)
 
 onMounted(() => {
   getProfile()
@@ -22,7 +23,7 @@ onMounted(() => {
 async function getProfile() {
   try {
     const profileId = route.params.profileId
-    profilesService.getProfile(profileId)
+    await profilesService.getProfile(profileId)
   }
   catch (error) {
     Pop.error(error, 'Could not get Profile')
@@ -33,7 +34,7 @@ async function getProfile() {
 async function getProfileVaults() {
   try {
     const profileId = route.params.profileId
-    profilesService.getProfileVaults(profileId)
+    await profilesService.getProfileVaults(profileId)
   }
   catch (error) {
     Pop.error(error, 'Could not get keeps')
@@ -44,7 +45,7 @@ async function getProfileVaults() {
 async function getProfileKeeps() {
   try {
     const profileId = route.params.profileId
-    profilesService.getProfileKeeps(profileId)
+    await profilesService.getProfileKeeps(profileId)
   }
   catch (error) {
     Pop.error(error, 'Could not get profiles keeps')
@@ -72,7 +73,7 @@ async function getProfileKeeps() {
       <div class="col-md-8">
         <div class="text-center">
           <h1 class="mt-5 pt-1">{{ profile?.name }}</h1>
-          <span>{{ vaults?.length }} vaults | 0 keeps</span>
+          <span>{{ vaults?.length }} vaults | {{ keeps?.length }} keeps</span>
         </div>
       </div>
       <div class="col-12">
@@ -99,6 +100,7 @@ async function getProfileKeeps() {
       </div>
     </div>
   </section>
+  <KeepDetailsModal />
 </template>
 
 

@@ -4,8 +4,10 @@ import KeepDetailsModal from './KeepDetailsModal.vue';
 import { Pop } from '@/utils/Pop.js';
 import { logger } from '@/utils/Logger.js';
 import { keepsService } from '@/services/KeepsService.js';
+import { computed } from 'vue';
+import { AppState } from '@/AppState.js';
 
-
+const account = computed(() => AppState.account)
 defineProps({
   keep: { type: Keep, required: true }
 })
@@ -20,19 +22,37 @@ async function getKeepById(keepId) {
   }
 }
 
+async function deleteKeep(keep) {
+  try {
+    const confirm = await Pop.confirm(`Are you sure you want to delete ${keep.name}?`, 'If you do, it will be gone forever')
+    if (!confirm) {
+      return
+    }
+    await keepsService.deleteKeep(keep.id)
+    Pop.success('You deleted the keep successfully!!!')
+  }
+  catch (error) {
+    Pop.error(error, 'Could not delete keep')
+    logger.error('COULD NOT DELETE KEEP', error)
+  }
+}
+
 </script>
 
 
 <template>
-  <div type="button" :title="`Open details page for ${keep.name}`" data-bs-toggle="modal"
-    data-bs-target="#keepDetailsModal" class="mb-3 position-relative image-container">
+  <div type="button" :title="`Open details page for ${keep.name}`" class="mb-3 image-container">
     <div @click="getKeepById(keep.id)">
 
-      <img :src="keep.img" :alt="'An image of ' + keep.name" class="w-100 rounded shadow-lg image-container-img">
-      <span class="overlay-text fw-bold text-light">{{ keep.name }}</span>
+      <img data-bs-toggle="modal" data-bs-target="#keepDetailsModal" :src="keep.img" :alt="'An image of ' + keep.name"
+        class="w-100 rounded shadow-lg image-container-img">
+      <span data-bs-toggle="modal" data-bs-target="#keepDetailsModal" class="overlay-text fw-bold text-light">{{
+        keep.name }}</span>
       <img class="overlay-img d-none d-md-block" :src="keep.creator.picture"
         :alt="`Profile picture for ${keep.creator.name}`">
     </div>
+    <span v-if="keep?.creatorId == account?.id" :title="`Delete ${keep?.name}`"
+      class="text-danger fs-4 mdi mdi-close position-absolute overlay-delete-button" @click="deleteKeep(keep)"></span>
   </div>
   <!-- <KeepDetailsModal /> -->
 </template>
@@ -83,6 +103,24 @@ async function getKeepById(keepId) {
   .overlay-img {
     right: 10px;
     bottom: 10px;
+  }
+}
+
+.overlay-delete-button {
+  position: absolute;
+  top: -2px;
+  right: -5px;
+  // transform: translate(-50%, -50%);
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  width: 2rem;
+  text-shadow: 1px 1px 5px rgb(0, 0, 0);
+}
+
+@media(max-width: 769px) {
+  .overlay-delete-button {
+    right: 10px;
+    top: 10px;
   }
 }
 </style>

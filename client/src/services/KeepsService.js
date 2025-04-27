@@ -4,6 +4,12 @@ import { Keep } from "@/models/Keep.js"
 import { AppState } from "@/AppState.js"
 
 class KeepsService {
+  async deleteKeep(id) {
+    const response = await api.delete(`api/keeps/${id}`)
+    logger.log('deleted keep', response.data)
+    const index = AppState.keeps.findIndex(keep => keep.id == id)
+    AppState.keeps.splice(index, 1)
+  }
   async getKeepById(keepId) {
     AppState.activeKeep = null
     const response = await api.get(`api/keeps/${keepId}`)

@@ -16,7 +16,7 @@ const keeps = computed(() => AppState.keeps)
 
 async function getAllKeeps() {
   try {
-    keepsService.getAllKeeps()
+    await keepsService.getAllKeeps()
   }
   catch (error) {
     Pop.error(error, 'Could not get keeps')
