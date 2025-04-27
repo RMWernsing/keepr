@@ -6,6 +6,9 @@ import { Vault } from "@/models/Vault.js"
 import { Keep } from "@/models/Keep.js"
 
 class ProfilesService {
+  editProfile(value) {
+    throw new Error('Method not implemented.')
+  }
   async getProfileKeeps(profileId) {
     AppState.keeps = []
     const response = await api.get(`api/profiles/${profileId}/keeps`)

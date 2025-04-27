@@ -1,5 +1,6 @@
 <script setup>
 import { AppState } from '@/AppState.js';
+import EditAccountModal from '@/components/EditAccountModal.vue';
 import KeepCard from '@/components/KeepCard.vue';
 import KeepDetailsModal from '@/components/KeepDetailsModal.vue';
 import { profilesService } from '@/services/ProfilesService.js';
@@ -21,7 +22,7 @@ onMounted(() => {
 
 async function getProfileVaults() {
   try {
-    await profilesService.getProfileVaults(profile.value.id)
+    await profilesService.getProfileVaults(profile?.value.id)
   }
   catch (error) {
     Pop.error(error, 'Could not get keeps')
@@ -31,7 +32,7 @@ async function getProfileVaults() {
 
 async function getProfileKeeps() {
   try {
-    await profilesService.getProfileKeeps(profile.value.id)
+    await profilesService.getProfileKeeps(profile?.value.id)
   }
   catch (error) {
     Pop.error(error, 'Could not get profiles keeps')
@@ -43,6 +44,7 @@ async function getProfileKeeps() {
 
 <template>
   <!-- TODO loading page for when data is taking a while to load in and to handle ghost data -->
+  <!-- TODO keeps and vaults are not reloading on refresh. that needs to be fixed. most likely need to be on account load page  -->
   <section v-if="profile" class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-12 col-lg-8 col-sm-12 position-relative">
@@ -59,7 +61,14 @@ async function getProfileKeeps() {
       <div class="col-md-8">
         <div class="text-center">
           <h1 class="mt-5 pt-1">{{ profile?.name }}</h1>
-          <span>{{ vaults?.length }} vaults | {{ keeps?.length }} keeps</span>
+          <span class="fs-4">{{ vaults?.length }} vaults | {{ keeps?.length }} keeps</span>
+          <div>
+            <span class="fs-5">Edit Account</span>
+            <button class="btn btn-primary ms-3" title="Edit Account" data-bs-toggle="modal"
+              data-bs-target="#EditAccount">
+              <span class="mdi mdi-account-box-outline text-light"></span>
+            </button>
+          </div>
         </div>
       </div>
       <div class="col-12">
@@ -86,6 +95,7 @@ async function getProfileKeeps() {
     </div>
   </section>
   <KeepDetailsModal />
+  <EditAccountModal />
 </template>
 
 
