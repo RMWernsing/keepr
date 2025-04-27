@@ -26,7 +26,12 @@ async function editProfile() {
       editableProfileData.value.coverImg = null
     }
     await profilesService.editProfile(editableProfileData.value)
-
+    editableProfileData.value = {
+      name: '',
+      picture: '',
+      coverImg: '',
+      id: account.value.id
+    }
   }
   catch (error) {
     Pop.error(error, 'Could not edit account')
@@ -39,6 +44,7 @@ async function editProfile() {
 
 <template>
   <!-- Modal -->
+  <!-- TODO hide modal when finished  -->
   <div class="modal fade" id="EditAccount" tabindex="-1" aria-labelledby="EditAccountLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -58,12 +64,16 @@ async function editProfile() {
                 <label for="img" class="form-label">Profile Image</label>
                 <input v-model="editableProfileData.picture" type="url" class="form-control" id="img" maxlength="1000">
               </div>
+              <img v-if="editableProfileData.picture" class="w-100" :src="editableProfileData.picture"
+                alt="profile picture preview">
               <div class="mb-3">
                 <label for="coverImg" class="form-label">Cover Image</label>
                 <input v-model="editableProfileData.coverImg" type="url" class="form-control" id="coverImg"
                   maxlength="2000">
               </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <img v-if="editableProfileData.coverImg" class="w-100" :src="editableProfileData.coverImg"
+                alt="profile picture preview">
+              <button type="submit" class="btn btn-success" title="submit form">Submit</button>
             </form>
           </form>
         </div>

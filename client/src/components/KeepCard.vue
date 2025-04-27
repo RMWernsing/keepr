@@ -6,6 +6,9 @@ import { logger } from '@/utils/Logger.js';
 import { keepsService } from '@/services/KeepsService.js';
 import { computed } from 'vue';
 import { AppState } from '@/AppState.js';
+import { useRoute } from 'vue-router';
+
+const route = useRoute()
 
 const account = computed(() => AppState.account)
 defineProps({
@@ -119,8 +122,8 @@ async function deleteKeep(keep) {
 
 @media(max-width: 769px) {
   .overlay-delete-button {
-    right: 10px;
-    top: 10px;
+    right: -2px;
+    top: -5px;
   }
 }
 </style>

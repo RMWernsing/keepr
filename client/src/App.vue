@@ -1,6 +1,13 @@
 <script setup>
+import { computed } from 'vue';
+import CreateKeepModal from './components/CreateKeepModal.vue';
+import CreateVaultModal from './components/CreateVaultModal.vue';
+import Footer from './components/Footer.vue';
 import Navbar from './components/Navbar.vue';
 import { RouterView } from 'vue-router';
+import { AppState } from './AppState.js';
+
+const account = computed(() => AppState.account)
 
 </script>
 
@@ -11,9 +18,11 @@ import { RouterView } from 'vue-router';
   <main>
     <RouterView />
   </main>
-  <!-- <footer class=" text-center">
-    Made with <i class="mdi mdi-heart text-pink"></i> by CodeWorks
-  </footer> -->
+  <footer v-if="account" class=" text-center sticky-bottom">
+    <Footer />
+  </footer>
+  <CreateKeepModal />
+  <CreateVaultModal />
 </template>
 
 <style lang="scss">
