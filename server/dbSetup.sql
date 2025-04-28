@@ -45,4 +45,6 @@ SELECT * FROM accounts;
 SELECT * FROM keeps;
 SELECT * FROM vaults;
 
+DELETE FROM vaults WHERE id = 18;
+
 DROP TABLE keeps;

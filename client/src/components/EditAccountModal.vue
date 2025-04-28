@@ -4,7 +4,9 @@ import { profilesService } from '@/services/ProfilesService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
 import { computed, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute()
 const account = computed(() => AppState.account)
 
 const editableProfileData = ref({
@@ -26,6 +28,7 @@ async function editProfile() {
       editableProfileData.value.coverImg = null
     }
     await profilesService.editProfile(editableProfileData.value)
+    getProfileKeeps()
     editableProfileData.value = {
       name: '',
       picture: '',
@@ -39,12 +42,22 @@ async function editProfile() {
   }
 }
 
+async function getProfileKeeps() {
+  try {
+    const profileId = route.params.profileId
+    await profilesService.getProfileKeeps(profileId)
+  }
+  catch (error) {
+    Pop.error(error, 'Could not get profiles keeps')
+    logger.error('COULD NOT GET PROFILES KEEPS', error)
+  }
+}
+
 </script>
 
 
 <template>
   <!-- Modal -->
-  <!-- TODO hide modal when finished  -->
   <div class="modal fade" id="EditAccount" tabindex="-1" aria-labelledby="EditAccountLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -71,9 +84,9 @@ async function editProfile() {
                 <input v-model="editableProfileData.coverImg" type="url" class="form-control" id="coverImg"
                   maxlength="2000">
               </div>
-              <img v-if="editableProfileData.coverImg" class="w-100" :src="editableProfileData.coverImg"
+              <img v-if="editableProfileData.coverImg" class="w-100 mb-2" :src="editableProfileData.coverImg"
                 alt="profile picture preview">
-              <button type="submit" class="btn btn-success" title="submit form">Submit</button>
+              <button data-bs-dismiss="modal" type="submit" class="btn btn-success" title="submit form">Submit</button>
             </form>
           </form>
         </div>

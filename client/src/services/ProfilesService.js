@@ -13,7 +13,7 @@ class ProfilesService {
     const response = await api.put('account', accountData)
     logger.log('here is your new account data', response.data)
     const account = new Account(response.data)
-    AppState.account = account
+    AppState.activeProfile = account
   }
   async getProfileKeeps(profileId) {
     AppState.keeps = []

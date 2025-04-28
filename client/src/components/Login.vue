@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import { AppState } from '../AppState.js';
 import { AuthService } from '../services/AuthService.js';
 
+
 const identity = computed(() => AppState.identity)
 const account = computed(() => AppState.account)
 
@@ -16,6 +17,7 @@ function logout() {
 </script>
 
 <template>
+  <!-- TODO when on profile page, hitting the manage account button does not reactivly change the active profile in the appstate -->
   <span v-if="account" class="navbar-text">
     <button class="btn selectable text-green" @click="login" v-if="!identity">
       Login

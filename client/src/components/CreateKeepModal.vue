@@ -14,6 +14,12 @@ const editableKeepData = ref({
 async function createKeep() {
   try {
     await keepsService.createKeep(editableKeepData.value)
+    editableKeepData.value = {
+      name: '',
+      description: '',
+      img: ''
+    }
+    Pop.success('Successfully create keep!')
   }
   catch (error) {
     Pop.error(error, 'Could not create keep')
@@ -24,7 +30,6 @@ async function createKeep() {
 
 
 <template>
-  <!-- TODO hide modal when finished creating keep -->
   <div class="modal fade" id="CreateKeepModal" tabindex="-1" aria-labelledby="CreateKeepModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -51,7 +56,7 @@ async function createKeep() {
                   required>
               </div>
               <img v-if="editableKeepData.img" class="w-100 mb-2" :src="editableKeepData.img" alt="Keep Image Preview">
-              <button type="submit" class="btn btn-success" title="submit form">Submit</button>
+              <button data-bs-dismiss="modal" type="submit" class="btn btn-success" title="submit form">Submit</button>
             </form>
           </form>
         </div>
