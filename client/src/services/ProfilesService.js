@@ -6,6 +6,13 @@ import { Vault } from "@/models/Vault.js"
 import { Keep } from "@/models/Keep.js"
 
 class ProfilesService {
+  async getMyProfileVaults(profileId) {
+    AppState.myVaults = []
+    const response = await api.get(`api/profiles/${profileId}/vaults`)
+    // logger.log('here are your vaults', response.data)
+    const vaults = response.data.map(pojo => new Vault(pojo))
+    AppState.myVaults = vaults
+  }
   makeActiveProfileNull() {
     AppState.activeProfile = null
   }

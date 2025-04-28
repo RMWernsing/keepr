@@ -5,6 +5,7 @@ import KeepCard from '@/components/KeepCard.vue';
 import KeepDetailsModal from '@/components/KeepDetailsModal.vue';
 import { keepsService } from '@/services/KeepsService.js';
 import { profilesService } from '@/services/ProfilesService.js';
+import { vaultsService } from '@/services/VaultsService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
 import { computed, onMounted } from 'vue';
@@ -15,6 +16,7 @@ onMounted(() => {
 })
 
 const keeps = computed(() => AppState.keeps)
+const account = computed(() => AppState.account)
 
 async function getAllKeeps() {
   try {
@@ -28,7 +30,6 @@ async function getAllKeeps() {
 function makeActiveProfileNull() {
   profilesService.makeActiveProfileNull()
 }
-
 </script>
 
 <template>

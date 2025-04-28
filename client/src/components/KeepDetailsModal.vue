@@ -4,6 +4,7 @@ import { computed } from 'vue';
 
 
 const keep = computed(() => AppState.activeKeep)
+const vaults = computed(() => AppState.myVaults)
 
 </script>
 
@@ -25,8 +26,8 @@ const keep = computed(() => AppState.activeKeep)
                   <div>
                   </div>
                   <div>
-                    <span class="mdi mdi-eye me-2"></span>
-                    <span class="me-2">{{ keep?.views }}</span>
+                    <span class="mdi mdi-eye me-2" :title="`view count is ${keep?.views}`"></span>
+                    <span class="me-2" :title="`view count is ${keep?.views}`">{{ keep?.views }}</span>
                     <span class="mdi mdi-lock me-2"></span>
                     <span>0</span>
                   </div>
@@ -42,10 +43,9 @@ const keep = computed(() => AppState.activeKeep)
                   <form>
                     <div class="d-flex gap-2">
                       <select class="form-select w-50" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option selected disabled>Select Vault to Save to</option>
+                        <option v-for="vault in vaults" :key="`my vaults ` + vault.id" :value="vault?.id">{{ vault?.name
+                          }}</option>
                       </select>
                       <button class="btn btn-primary">Save</button>
                     </div>
