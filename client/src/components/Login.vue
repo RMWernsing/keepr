@@ -30,7 +30,8 @@ function logout() {
         </div>
         <div class="dropdown-menu dropdown-menu-sm-end dropdown-menu-start p-0" role="menu" title="account menu">
           <div class="list-group">
-            <RouterLink :to="{ name: 'Account' }">
+            <!-- <RouterLink v-if="keep" :to="{ name: 'Profile', params: { profileId: keep?.creator.id } }"> -->
+            <RouterLink :to="{ name: 'Profile', params: { profileId: account?.id } }">
               <div class="list-group-item dropdown-item list-group-item-action">
                 Manage Account
               </div>

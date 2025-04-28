@@ -11,7 +11,7 @@ const editableProfileData = ref({
   name: '',
   picture: '',
   coverImg: '',
-  id: account.value.id
+  id: account?.value?.id
 })
 
 async function editProfile() {

@@ -50,7 +50,6 @@ const keep = computed(() => AppState.activeKeep)
                       <button class="btn btn-primary">Save</button>
                     </div>
                   </form>
-                  <!-- <RouterLink :to="{ name: 'Album Details', params: { albumId: album.id } }" -->
                   <RouterLink v-if="keep" :to="{ name: 'Profile', params: { profileId: keep?.creator.id } }">
                     <div :title="`navigate to ${keep.creator.name}'s profile page'`" data-bs-dismiss="modal"
                       class="d-flex gap-2 flex-wrap no-underline">

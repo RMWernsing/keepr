@@ -44,7 +44,6 @@ async function getProfileKeeps() {
 
 <template>
   <!-- TODO loading page for when data is taking a while to load in and to handle ghost data -->
-  <!-- TODO keeps and vaults are not reloading on refresh. that needs to be fixed. most likely need to be on account load page  -->
   <section v-if="profile" class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-12 col-lg-8 col-sm-12 position-relative">

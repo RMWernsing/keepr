@@ -1,5 +1,6 @@
 <script setup>
 import { AppState } from '@/AppState.js';
+import EditAccountModal from '@/components/EditAccountModal.vue';
 import KeepCard from '@/components/KeepCard.vue';
 import KeepDetailsModal from '@/components/KeepDetailsModal.vue';
 import { profilesService } from '@/services/ProfilesService.js';
@@ -13,6 +14,7 @@ const route = useRoute()
 const profile = computed(() => AppState.activeProfile)
 const vaults = computed(() => AppState.vaults)
 const keeps = computed(() => AppState.keeps)
+const account = computed(() => AppState.account)
 
 onMounted(() => {
   getProfile()
@@ -74,6 +76,13 @@ async function getProfileKeeps() {
         <div class="text-center">
           <h1 class="mt-5 pt-1">{{ profile?.name }}</h1>
           <span>{{ vaults?.length }} vaults | {{ keeps?.length }} keeps</span>
+          <div v-if="profile.id == account.id">
+            <span class="fs-5">Edit Account</span>
+            <button class="btn btn-primary ms-3" title="Edit Account" data-bs-toggle="modal"
+              data-bs-target="#EditAccount">
+              <span class="mdi mdi-account-box-outline text-light"></span>
+            </button>
+          </div>
         </div>
       </div>
       <div class="col-12">
@@ -101,6 +110,7 @@ async function getProfileKeeps() {
     </div>
   </section>
   <KeepDetailsModal />
+  <EditAccountModal />
 </template>
 
 
