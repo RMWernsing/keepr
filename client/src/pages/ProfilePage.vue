@@ -76,7 +76,7 @@ async function getProfileKeeps() {
         <div class="text-center">
           <h1 class="mt-5 pt-1">{{ profile?.name }}</h1>
           <span>{{ vaults?.length }} vaults | {{ keeps?.length }} keeps</span>
-          <div v-if="profile.id == account.id">
+          <div v-if="profile?.id == account?.id">
             <span class="fs-5">Edit Account</span>
             <button class="btn btn-primary ms-3" title="Edit Account" data-bs-toggle="modal"
               data-bs-target="#EditAccount">
@@ -93,7 +93,7 @@ async function getProfileKeeps() {
           <div v-for="vault in vaults" :key="vault.id" class="col-lg-3 col-md-4 col-sm-6 position-relative mb-1">
             <!-- <RouterLink v-if="keep" :to="{ name: 'Profile', params: { profileId: keep?.creator.id } }"> -->
             <RouterLink :to="{ name: 'Vault', params: { vaultId: vault.id } }">
-              <div class="mb-4">
+              <div class="mb-4" :title="`Navigate to the ${vault.name} vault`">
                 <img class="w-100 vault-img rounded" :src="vault.img" :alt="`image for the ${vault.name} vault`">
               </div>
               <p class="position-absolute vault-name fs-5 fw-bold">{{ vault.name }}</p>

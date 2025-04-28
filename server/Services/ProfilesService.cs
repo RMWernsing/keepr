@@ -1,6 +1,7 @@
 
 
 
+
 namespace keepr.Services;
 
 public class ProfilesService
@@ -23,9 +24,17 @@ public class ProfilesService
     return keeps;
   }
 
-  internal List<Vault> GetVaultsForProfile(string profileId)
+  private List<Vault> GetVaultsForProfile(string profileId)
   {
     List<Vault> vaults = _repository.GetVaultsForProfile(profileId);
     return vaults;
+  }
+
+  // NOTE overload method
+  internal List<Vault> GetVaultsForProfile(string profileId, Account userInfo)
+  {
+    List<Vault> vaults = GetVaultsForProfile(profileId);
+
+    return vaults.FindAll(vault => vault.IsPrivate == false || vault.CreatorId == userInfo?.Id);
   }
 }

@@ -9,6 +9,7 @@ import { useRoute } from 'vue-router';
 const route = useRoute()
 
 const vault = computed(() => AppState.activeVault)
+const account = computed(()=> AppState.account)
 
 onMounted(() => {
   getVaultById()
@@ -71,7 +72,7 @@ async function privateVault() {
             <p class="fs-5">by {{ vault.creator.name }}</p>
           </div>
         </div>
-        <div class="d-flex justify-content-between mt-2">
+        <div v-if="vault?.creatorId == account?.id" class="d-flex justify-content-between mt-2">
           <div>
             <button class="btn btn-danger">Delete Vault</button>
           </div>
