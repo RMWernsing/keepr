@@ -16,7 +16,7 @@ function logout() {
 </script>
 
 <template>
-  <span class="navbar-text">
+  <span v-if="account" class="navbar-text">
     <button class="btn selectable text-green" @click="login" v-if="!identity">
       Login
     </button>
