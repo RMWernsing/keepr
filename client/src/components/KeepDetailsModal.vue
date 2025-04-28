@@ -26,7 +26,7 @@ const keep = computed(() => AppState.activeKeep)
                   </div>
                   <div>
                     <span class="mdi mdi-eye me-2"></span>
-                    <span class="me-2">0</span>
+                    <span class="me-2">{{ keep?.views }}</span>
                     <span class="mdi mdi-lock me-2"></span>
                     <span>0</span>
                   </div>

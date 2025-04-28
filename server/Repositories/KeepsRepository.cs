@@ -98,4 +98,19 @@ public class KeepsRepository
       throw new Exception(rowsAffected + " rows were affected and thats really bad");
     }
   }
+
+  internal void IncreaseVisits(Keep keep)
+  {
+    string sql = @"
+    UPDATE keeps 
+    SET views = @Views
+    WHERE id = @Id LIMIT 1;";
+
+    int rowsAffected = _db.Execute(sql, keep);
+
+    if (rowsAffected != 1)
+    {
+      throw new Exception(rowsAffected + " rows were affected and thats bad");
+    }
+  }
 }

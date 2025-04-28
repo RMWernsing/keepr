@@ -91,10 +91,14 @@ async function getProfileKeeps() {
             <h2 class="mb-5">Vaults</h2>
           </div>
           <div v-for="vault in vaults" :key="vault.id" class="col-lg-3 col-md-4 col-sm-6 position-relative mb-1">
-            <div class="mb-4">
-              <img class="w-100 vault-img rounded" :src="vault.img" :alt="`image for the ${vault.name} vault`">
-            </div>
-            <p class="position-absolute vault-name fs-5 fw-bold">{{ vault.name }}</p>
+            <!-- <RouterLink v-if="keep" :to="{ name: 'Profile', params: { profileId: keep?.creator.id } }"> -->
+            <RouterLink :to="{ name: 'Vault', params: { vaultId: vault.id } }">
+              <div class="mb-4">
+                <img class="w-100 vault-img rounded" :src="vault.img" :alt="`image for the ${vault.name} vault`">
+              </div>
+              <p class="position-absolute vault-name fs-5 fw-bold">{{ vault.name }}</p>
+              <span v-if="vault?.isPrivate" class="mdi mdi-lock text-light position-absolute private-icon fs-5"></span>
+            </RouterLink>
           </div>
         </div>
       </div>
@@ -137,6 +141,12 @@ async function getProfileKeeps() {
   height: 8rem;
   object-fit: cover;
   object-position: center;
+}
+
+.private-icon {
+  top: 5px;
+  right: 21px;
+  text-shadow: 1px 1px 5px black;
 }
 
 .vault-name {

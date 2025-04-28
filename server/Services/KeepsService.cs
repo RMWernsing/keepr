@@ -65,4 +65,13 @@ public class KeepsService
     _repository.DeleteKeep(keepId);
     return keep.Name + " has been deleted.";
   }
+
+  internal Keep IncreaseViews(int keepId)
+  {
+    Keep keep = GetKeepById(keepId);
+
+    keep.Views++;
+    _repository.IncreaseVisits(keep);
+    return keep;
+  }
 }

@@ -18,7 +18,7 @@ function logout() {
 
 <template>
   <!-- TODO when on profile page, hitting the manage account button does not reactivly change the active profile in the appstate -->
-  <span v-if="account" class="navbar-text">
+  <span class="navbar-text">
     <button class="btn selectable text-green" @click="login" v-if="!identity">
       Login
     </button>
@@ -30,7 +30,8 @@ function logout() {
             <img :src="account?.picture || identity?.picture" alt="account photo" height="40" class="user-img shadow" />
           </div>
         </div>
-        <div class="dropdown-menu dropdown-menu-sm-end dropdown-menu-start p-0" role="menu" title="account menu">
+        <div v-if="account" class="dropdown-menu dropdown-menu-sm-end dropdown-menu-start p-0" role="menu"
+          title="account menu">
           <div class="list-group">
             <!-- <RouterLink v-if="keep" :to="{ name: 'Profile', params: { profileId: keep?.creator.id } }"> -->
             <RouterLink :to="{ name: 'Profile', params: { profileId: account?.id } }">
