@@ -6,6 +6,9 @@ import { Vault } from "@/models/Vault.js"
 import { Keep } from "@/models/Keep.js"
 
 class ProfilesService {
+  makeActiveProfileNull() {
+    AppState.activeProfile = null
+  }
   async editProfile(accountData) {
     const response = await api.put('account', accountData)
     logger.log('here is your new account data', response.data)

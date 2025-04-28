@@ -4,12 +4,14 @@ import Example from '@/components/Example.vue';
 import KeepCard from '@/components/KeepCard.vue';
 import KeepDetailsModal from '@/components/KeepDetailsModal.vue';
 import { keepsService } from '@/services/KeepsService.js';
+import { profilesService } from '@/services/ProfilesService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
 import { computed, onMounted } from 'vue';
 
 onMounted(() => {
   getAllKeeps()
+  makeActiveProfileNull()
 })
 
 const keeps = computed(() => AppState.keeps)
@@ -22,6 +24,9 @@ async function getAllKeeps() {
     Pop.error(error, 'Could not get keeps')
     logger.error('COULD NOT GET KEEPS', error)
   }
+}
+function makeActiveProfileNull() {
+  profilesService.makeActiveProfileNull()
 }
 
 </script>

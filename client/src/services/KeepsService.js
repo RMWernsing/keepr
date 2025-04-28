@@ -4,6 +4,14 @@ import { Keep } from "@/models/Keep.js"
 import { AppState } from "@/AppState.js"
 
 class KeepsService {
+  async createKeep(keepData) {
+    const response = await api.post('api/keeps', keepData)
+    logger.log('created keep', response.data)
+    const keep = new Keep(response.data)
+    // NOTE this is not working properly. try and fix it tomorrow
+    if (keep.creator.id != AppState.activeProfile?.id || AppState.activeProfile != null) return
+    AppState.keeps.push(keep)
+  }
   async deleteKeep(id) {
     const response = await api.delete(`api/keeps/${id}`)
     logger.log('deleted keep', response.data)
