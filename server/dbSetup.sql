@@ -55,3 +55,14 @@ DELETE FROM vaults WHERE id = 18;
 
 DROP TABLE keeps;
 DROP TABLE vault_keeps;
+
+    SELECT 
+    vault_keeps.*,
+    vaults.*,
+    keeps.*,
+    accounts.*
+    FROM vault_keeps
+    INNER JOIN vaults ON vaults.id = vault_keeps.vault_id
+    INNER JOIN keeps ON keeps.id = vault_keeps.keep_id
+    INNER JOIN accounts on accounts.id = vault_keeps.creator_id;
+
