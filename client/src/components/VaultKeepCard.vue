@@ -7,10 +7,13 @@ import { keepsService } from '@/services/KeepsService.js';
 import { computed } from 'vue';
 import { AppState } from '@/AppState.js';
 import { useRoute } from 'vue-router';
+import VaultKeepDetailModal from './VaultKeepDetailModal.vue';
+import { vaultKeepsService } from '@/services/VaultKeepsService.js';
 
 const route = useRoute()
 
 const account = computed(() => AppState.account)
+
 defineProps({
   keep: { type: Keep, required: true }
 })
@@ -26,13 +29,13 @@ async function getKeepById(keepId) {
 }
 
 // TODO update keep function so that it deleted the keep from the vault, not the original keep
-async function deleteKeep(keep) {
+async function deleteVaultKeep(keep) {
   try {
-    const confirm = await Pop.confirm(`Are you sure you want to delete ${keep.name}?`, 'If you do, it will be gone forever')
+    const confirm = await Pop.confirm(`Are you sure you want to delete ${keep?.name} from this vault?`)
     if (!confirm) {
       return
     }
-    await keepsService.deleteKeep(keep.id)
+    await vaultKeepsService.deleteVaultKeep(keep?.vaultKeepId)
     Pop.success('You deleted the keep successfully!!!')
   }
   catch (error) {
@@ -48,17 +51,18 @@ async function deleteKeep(keep) {
   <div type="button" :title="`Open details page for ${keep.name}`" class="mb-3 image-container">
     <div @click="getKeepById(keep.id)">
 
-      <img data-bs-toggle="modal" data-bs-target="#keepDetailsModal" :src="keep.img" :alt="'An image of ' + keep.name"
-        class="w-100 rounded shadow-lg image-container-img">
-      <span data-bs-toggle="modal" data-bs-target="#keepDetailsModal" class="overlay-text fw-bold text-light">{{
+      <img data-bs-toggle="modal" data-bs-target="#vaultKeepDetailsModal" :src="keep.img"
+        :alt="'An image of ' + keep.name" class="w-100 rounded shadow-lg image-container-img">
+      <span data-bs-toggle="modal" data-bs-target="#vaultKeepDetailsModal" class="overlay-text fw-bold text-light">{{
         keep.name }}</span>
-      <img class="overlay-img d-none d-md-block" :src="keep.creator.picture"
-        :alt="`Profile picture for ${keep.creator.name}`">
+      <!-- <img class="overlay-img d-none d-md-block" :src="keep.creator.picture"
+        :alt="`Profile picture for ${keep.creator.name}`"> -->
     </div>
-    <span v-if="keep?.creatorId == account?.id" :title="`Delete ${keep?.name}`"
-      class="text-danger fs-4 mdi mdi-close position-absolute overlay-delete-button" @click="deleteKeep(keep)"></span>
+    <span :title="`Delete ${keep?.name} from vault`"
+      class="text-danger fs-2 mdi mdi-delete-circle position-absolute overlay-delete-button"
+      @click="deleteVaultKeep(keep)"></span>
   </div>
-  <!-- <KeepDetailsModal /> -->
+  <VaultKeepDetailModal />
 </template>
 
 
@@ -113,7 +117,7 @@ async function deleteKeep(keep) {
 .overlay-delete-button {
   position: absolute;
   top: -2px;
-  right: -5px;
+  right: 6px;
   // transform: translate(-50%, -50%);
   aspect-ratio: 1/1;
   border-radius: 50%;

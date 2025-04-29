@@ -75,4 +75,9 @@ public class KeepsService
     return keep;
   }
 
+  internal void IncreaseKept(Keep keep)
+  {
+    keep.Kept++;
+    _repository.IncreaseKept(keep);
+  }
 }

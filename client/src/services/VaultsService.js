@@ -6,11 +6,11 @@ import { Keep } from "@/models/Keep.js"
 
 class VaultsService {
   async getKeepsForVault(vaultId) {
-    AppState.keeps = []
+    AppState.vaultKeeps = []
     const response = await api.get(`api/vaults/${vaultId}/keeps`)
     // logger.log('here are your keeps for this vault', response.data)
     const keeps = response.data.map(pojo => new Keep(pojo))
-    AppState.keeps = keeps
+    AppState.vaultKeeps = keeps
   }
   async deleteVault(vaultId) {
     const response = await api.delete(`api/vaults/${vaultId}`)

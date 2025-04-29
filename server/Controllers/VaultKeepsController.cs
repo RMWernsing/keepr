@@ -44,4 +44,18 @@ public class VaultKeepsController : ControllerBase
       return BadRequest(exception.Message);
     }
   }
+
+  [HttpGet("{vaultKeepId}")]
+  public ActionResult<VaultKeepKeep> GetVaultKeepKeepById(int vaultKeepId)
+  {
+    try
+    {
+      VaultKeepKeep keep = _vaultKeepsService.GetVaultKeepKeepById(vaultKeepId);
+      return Ok(keep);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
 }

@@ -1,5 +1,6 @@
 <script setup>
 import { AppState } from '@/AppState.js';
+import { Keep } from '@/models/Keep.js';
 import { vaultKeepsService } from '@/services/VaultKeepsService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
@@ -7,25 +8,29 @@ import { computed, ref } from 'vue';
 
 
 const keep = computed(() => AppState.activeKeep)
-const vaults = computed(() => AppState.myVaults)
+const vault = computed(() => AppState.activeVault)
+const account = computed(() => AppState.account)
+
 
 const editableKeepData = ref({
   vaultId: ''
 })
 
-async function addKeepToVault() {
+async function deleteVaultKeep(vaultKeepId) {
   try {
-    await vaultKeepsService.addKeepToVault(editableKeepData.value.vaultId, AppState.activeKeep?.id)
+    const confirm = await Pop.confirm('Are you sure you want to remove this keep from your vault?')
+    if (!confirm) {
+      return
+    }
+    await vaultKeepsService.deleteVaultKeep(vaultKeepId)
+
   }
   catch (error) {
-    Pop.error(error, 'Could not add keep to vault')
-    logger.error('COULD NOT ADD KEEP TO VAULT', error)
+    Pop.error(error, 'Could not delete vault from keep')
+    logger.error('COULD NOT DELETE VAULT KEEP', error)
   }
 }
 
-function increaseKept() {
-  keep.value.kept++
-}
 
 </script>
 
@@ -33,7 +38,7 @@ function increaseKept() {
 <template>
   <!-- Modal -->
   <!-- TODO fix the styling of the whole modal. it doesn't look great ☹️ -->
-  <div class="modal fade" id="keepDetailsModal" tabindex="-1" aria-labelledby="keepDetailsModalLabel"
+  <div class="modal fade" id="vaultKeepDetailsModal" tabindex="-1" aria-labelledby="vaultKeepDetailsModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-xl modal-fullscreen-md-down">
       <div class="modal-content">
@@ -50,7 +55,7 @@ function increaseKept() {
                     <span class="mdi mdi-eye me-2" :title="`view count is ${keep?.views}`"></span>
                     <span class="me-2" :title="`view count is ${keep?.views}`">{{ keep?.views }}</span>
                     <span class="mdi mdi-lock me-2"></span>
-                    <span>{{ keep?.kept }}</span>
+                    <span>0</span>
                   </div>
                   <button type="button" class="btn-close text-end" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -61,19 +66,9 @@ function increaseKept() {
                   </div>
                 </div>
                 <div class="position-absolute form-position d-flex justify-content-between flex-grow-1">
-                  <form @submit.prevent="addKeepToVault()">
-                    <div class="d-flex gap-2">
-                      <select v-model="editableKeepData.vaultId" class="form-select w-50"
-                        aria-label="Default select example">
-                        <option selected disabled>Select Vault to Save to</option>
-                        <option v-for="vault in vaults" :key="`my vaults ` + vault.id" :value="vault?.id">
-                          {{ vault?.name }}
-                        </option>
-                      </select>
-                      <button @click="increaseKept()" class="btn btn-primary" type="submit"
-                        title="Add keep to vault selected">Save</button>
-                    </div>
-                  </form>
+                  <div data-bs-dismiss="modal" @click="deleteVaultKeep(keep.vaultKeepId)"
+                    v-if="account?.id == vault?.creatorId">
+                  </div>
                   <RouterLink v-if="keep" :to="{ name: 'Profile', params: { profileId: keep?.creator.id } }">
                     <div :title="`navigate to ${keep.creator.name}'s profile page'`" data-bs-dismiss="modal"
                       class="d-flex gap-2 flex-wrap no-underline">

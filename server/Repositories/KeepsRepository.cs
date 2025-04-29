@@ -41,7 +41,8 @@ public class KeepsRepository
     keeps.*,
     accounts.*
     FROM keeps
-    INNER JOIN accounts on accounts.id = keeps.creator_id;";
+    INNER JOIN accounts on accounts.id = keeps.creator_id
+    ORDER BY keeps.created_at DESC;";
 
     List<Keep> keep = _db.Query(sql, (Keep keep, Profile account) =>
     {
@@ -105,6 +106,18 @@ public class KeepsRepository
     UPDATE keeps 
     SET views = @Views
     WHERE id = @Id LIMIT 1;";
+
+    int rowsAffected = _db.Execute(sql, keep);
+
+    if (rowsAffected != 1)
+    {
+      throw new Exception(rowsAffected + " rows were affected and thats bad");
+    }
+  }
+
+  internal void IncreaseKept(Keep keep)
+  {
+    string sql = "UPDATE keeps SET kept = @Kept WHERE id = @Id LIMIT 1;";
 
     int rowsAffected = _db.Execute(sql, keep);
 

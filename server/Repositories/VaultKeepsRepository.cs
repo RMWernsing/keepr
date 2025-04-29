@@ -64,4 +64,25 @@ public class VaultKeepsRepository
       throw new Exception(rowsAffected + " rows were affected and that is bad");
     }
   }
+
+  internal VaultKeepKeep GetVaultKeepKeepById(int vaultKeepId)
+  {
+    string sql = @"
+    SELECT 
+    keeps.*,
+    vault_keeps.*,
+    accounts.*
+    FROM vault_keeps
+    INNER JOIN keeps ON keeps.id = vault_keeps.keep_id
+    INNER JOIN accounts on accounts.id = vault_keeps.creator_id
+    WHERE vault_keeps.vault_id = @vaultKeepId;";
+
+    VaultKeepKeep keep = _db.Query(sql, (VaultKeepKeep keep, VaultKeep vaultKeep, Profile account) =>
+    {
+      keep.VaultKeepId = vaultKeep.Id;
+      keep.Creator = account;
+      return keep;
+    }, new { vaultKeepId }).SingleOrDefault();
+    return keep;
+  }
 }

@@ -2,16 +2,22 @@ namespace keepr.Services;
 
 public class VaultKeepsService
 {
-  public VaultKeepsService(VaultKeepsRepository repository, VaultsService vaultsService)
+  public VaultKeepsService(VaultKeepsRepository repository, VaultsService vaultsService, KeepsService keepsService)
   {
     _repository = repository;
     _vaultsService = vaultsService;
+    _keepsService = keepsService;
   }
   private readonly VaultKeepsRepository _repository;
   private readonly VaultsService _vaultsService;
+  private readonly KeepsService _keepsService;
 
   internal VaultKeep CreateVaultKeep(VaultKeep vaultKeepData)
   {
+    Keep keep = _keepsService.GetKeepById(vaultKeepData.KeepId);
+
+    _keepsService.IncreaseKept(keep);
+
     VaultKeep vaultKeep = _repository.CreateVaultKeep(vaultKeepData);
     return vaultKeep;
   }
@@ -39,7 +45,7 @@ public class VaultKeepsService
 
   }
 
-  private VaultKeep GetVaultKeepById(int vaultKeepId)
+  public VaultKeep GetVaultKeepById(int vaultKeepId)
   {
     VaultKeep vaultKeep = _repository.GetVaultKeepById(vaultKeepId);
     if (vaultKeep == null)
@@ -47,5 +53,11 @@ public class VaultKeepsService
       throw new Exception("Invalid id: " + vaultKeepId);
     }
     return vaultKeep;
+  }
+
+  internal VaultKeepKeep GetVaultKeepKeepById(int vaultKeepId)
+  {
+    VaultKeepKeep keep = _repository.GetVaultKeepKeepById(vaultKeepId);
+    return keep;
   }
 }

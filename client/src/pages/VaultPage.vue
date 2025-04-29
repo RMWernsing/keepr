@@ -12,7 +12,7 @@ const router = useRouter()
 
 const vault = computed(() => AppState.activeVault)
 const account = computed(() => AppState.account)
-const keeps = computed(() => AppState.keeps)
+const keeps = computed(() => AppState.vaultKeeps)
 
 onMounted(() => {
   getVaultById()
@@ -81,6 +81,7 @@ async function getKeepsForVault() {
   <!-- TODO add delete function to delete vault, kick user off the page -->
   <!-- TODO push user of the page if they try to use an invalid vault id -->
   <!-- TODO add a loading page -->
+  <!-- TODO make the profile picture for keep accurate -->
   <section v-if="vault" class="container">
     <div class="row justify-content-center mt-4 ">
       <div class="col-md-6">
@@ -119,6 +120,11 @@ async function getKeepsForVault() {
           <div v-for="keep in keeps" :key="keep.id">
             <VaultKeepCard :keep="keep" />
           </div>
+        </div>
+      </div>
+      <div v-if="keeps.length == 0" class="col-12">
+        <div class="text-center mt-5">
+          <h2>You have no keeps in this vault ☹️</h2>
         </div>
       </div>
     </div>
