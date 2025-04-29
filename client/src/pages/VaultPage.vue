@@ -27,6 +27,7 @@ async function getVaultById() {
   catch (error) {
     Pop.error(error, 'Could not get vault',)
     logger.error('COULD NOT GET VAULT', error)
+    router.push({ name: 'Home' })
   }
 }
 

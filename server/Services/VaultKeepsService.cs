@@ -12,9 +12,15 @@ public class VaultKeepsService
   private readonly VaultsService _vaultsService;
   private readonly KeepsService _keepsService;
 
-  internal VaultKeep CreateVaultKeep(VaultKeep vaultKeepData)
+  internal VaultKeep CreateVaultKeep(VaultKeep vaultKeepData, Account userInfo)
   {
     Keep keep = _keepsService.GetKeepById(vaultKeepData.KeepId);
+
+    Vault vault = _vaultsService.GetVaultById(vaultKeepData.VaultId);
+    if (vault.CreatorId != userInfo.Id)
+    {
+      throw new Exception("YOU CANNOT ADD A KEEP TO SOMEONE ELSES VAULT!");
+    }
 
     _keepsService.IncreaseKept(keep);
 

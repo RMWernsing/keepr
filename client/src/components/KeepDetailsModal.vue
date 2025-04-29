@@ -58,7 +58,7 @@ function increaseKept() {
                 <div class="flex-grow">
                   <div>
                     <h1 class="text-center mt-5 pt-5">{{ keep?.name }}</h1>
-                    <p class="px-3 mt-5 mobile-margin">{{ keep?.description }}</p>
+                    <p class="px-3 mt-5 mobile-margin text-break">{{ keep?.description }}</p>
                   </div>
                 </div>
                 <div class="position-absolute form-position d-flex justify-content-between flex-grow-1">

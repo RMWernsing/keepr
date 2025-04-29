@@ -9,7 +9,7 @@ class KeepsService {
     logger.log('created keep', response.data)
     const keep = new Keep(response.data)
     if (AppState.activeProfile === null || keep.creatorId === AppState.activeProfile.id) {
-      AppState.keeps.push(keep)
+      AppState.keeps.unshift(keep)
     }
   }
   async deleteKeep(id) {

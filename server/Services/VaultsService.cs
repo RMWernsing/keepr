@@ -25,6 +25,7 @@ public class VaultsService
     {
       throw new Exception("Invalid ID: " + vaultId);
     }
+
     return vault;
   }
 
@@ -57,5 +58,15 @@ public class VaultsService
 
     _repository.DeleteVault(vaultId);
     return vault.Name + " has been deleted";
+  }
+
+  internal Vault GetVaultById(int vaultId, Account userInfo)
+  {
+    Vault vault = GetVaultById(vaultId);
+    if (vault.IsPrivate == true && vault.CreatorId != userInfo.Id)
+    {
+      throw new Exception("Invalid Id: " + vaultId);
+    }
+    return vault;
   }
 }
