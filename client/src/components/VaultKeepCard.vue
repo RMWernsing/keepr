@@ -13,6 +13,7 @@ import { vaultKeepsService } from '@/services/VaultKeepsService.js';
 const route = useRoute()
 
 const account = computed(() => AppState.account)
+const vault = computed(() => AppState.activeVault)
 
 defineProps({
   keep: { type: Keep, required: true }
@@ -58,7 +59,7 @@ async function deleteVaultKeep(keep) {
       <!-- <img class="overlay-img d-none d-md-block" :src="keep.creator.picture"
         :alt="`Profile picture for ${keep.creator.name}`"> -->
     </div>
-    <span :title="`Delete ${keep?.name} from vault`"
+    <span v-if="account?.id == vault?.creatorId" :title="`Delete ${keep?.name} from vault`"
       class="text-danger fs-2 mdi mdi-delete-circle position-absolute overlay-delete-button"
       @click="deleteVaultKeep(keep)"></span>
   </div>

@@ -8,6 +8,7 @@ import { computed, ref } from 'vue';
 
 const keep = computed(() => AppState.activeKeep)
 const vaults = computed(() => AppState.myVaults)
+const account = computed(() => AppState.account)
 
 const editableKeepData = ref({
   vaultId: ''
@@ -61,7 +62,7 @@ function increaseKept() {
                   </div>
                 </div>
                 <div class="position-absolute form-position d-flex justify-content-between flex-grow-1">
-                  <form @submit.prevent="addKeepToVault()">
+                  <form v-if="account" @submit.prevent="addKeepToVault()">
                     <div class="d-flex gap-2">
                       <select v-model="editableKeepData.vaultId" class="form-select w-50"
                         aria-label="Default select example">

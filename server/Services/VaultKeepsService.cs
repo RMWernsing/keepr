@@ -36,7 +36,13 @@ public class VaultKeepsService
 
   internal void DelteVaultKeep(int vaultKeepId, Account userInfo)
   {
+
     VaultKeep vaultKeep = GetVaultKeepById(vaultKeepId);
+
+    Keep keep = _keepsService.GetKeepById(vaultKeep.KeepId);
+
+    _keepsService.DecreaseKept(keep);
+
     if (vaultKeep.CreatorId != userInfo.Id)
     {
       throw new Exception("YOU DO NOT HAVE PERMISSION TO DELETE SOMEONE ELSES KEEP FROM THEIR VAULT");

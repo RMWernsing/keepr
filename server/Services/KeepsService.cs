@@ -80,4 +80,10 @@ public class KeepsService
     keep.Kept++;
     _repository.IncreaseKept(keep);
   }
+
+  internal void DecreaseKept(Keep keep)
+  {
+    keep.Kept--;
+    _repository.DecreaseKept(keep);
+  }
 }

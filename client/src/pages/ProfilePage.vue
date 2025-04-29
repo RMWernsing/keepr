@@ -86,7 +86,7 @@ async function getProfileKeeps() {
         </div>
       </div>
       <div class="col-12">
-        <div class="row mt-5">
+        <div v-if="vaults" class="row mt-5">
           <div class="col-12">
             <h2 class="mb-5">Vaults</h2>
           </div>

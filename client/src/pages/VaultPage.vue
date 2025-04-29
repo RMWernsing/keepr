@@ -115,7 +115,7 @@ async function getKeepsForVault() {
             Keeps</span>
         </div>
       </div>
-      <div class="col-12">
+      <div v-if="keeps" class="col-12">
         <div class="masonry-container mt-4">
           <div v-for="keep in keeps" :key="keep.id">
             <VaultKeepCard :keep="keep" />

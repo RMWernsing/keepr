@@ -33,6 +33,17 @@ AuthService.on(AUTH_EVENTS.AUTHENTICATED, async function () {
     Pop.error(error, 'Could not get vaults')
     logger.error('COULD NOT GET VAULTS', error)
   }
+  try {
+    let profileId = AppState.activeProfile?.id
+    if (profileId == null) {
+      profileId = AppState.account.id
+    }
+    await profilesService.getProfileVaults(profileId)
+  }
+  catch (error) {
+    Pop.error(error, 'Could not get keeps')
+    logger.error('COULD NOT GET KEEPS', error)
+  }
 })
 
 async function refreshAuthToken(config) {

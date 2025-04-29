@@ -55,7 +55,7 @@ async function deleteVaultKeep(vaultKeepId) {
                     <span class="mdi mdi-eye me-2" :title="`view count is ${keep?.views}`"></span>
                     <span class="me-2" :title="`view count is ${keep?.views}`">{{ keep?.views }}</span>
                     <span class="mdi mdi-lock me-2"></span>
-                    <span>0</span>
+                    <span>{{ keep?.kept }}</span>
                   </div>
                   <button type="button" class="btn-close text-end" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>

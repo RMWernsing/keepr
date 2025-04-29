@@ -126,4 +126,16 @@ public class KeepsRepository
       throw new Exception(rowsAffected + " rows were affected and thats bad");
     }
   }
+
+  internal void DecreaseKept(Keep keep)
+  {
+    string sql = "UPDATE keeps SET kept = @Kept WHERE id = @Id LIMIT 1;";
+
+    int rowsAffected = _db.Execute(sql, keep);
+
+    if (rowsAffected != 1)
+    {
+      throw new Exception(rowsAffected + " rows were affected and thats bad");
+    }
+  }
 }
