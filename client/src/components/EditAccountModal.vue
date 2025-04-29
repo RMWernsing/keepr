@@ -57,7 +57,7 @@ async function getProfileKeeps() {
 
 
 <template>
-  <!-- Modal -->
+  <!-- TODO update account picture in the top right when picture is changed -->
   <div class="modal fade" id="EditAccount" tabindex="-1" aria-labelledby="EditAccountLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">

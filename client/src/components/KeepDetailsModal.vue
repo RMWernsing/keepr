@@ -1,10 +1,27 @@
 <script setup>
 import { AppState } from '@/AppState.js';
-import { computed } from 'vue';
+import { vaultKeepsService } from '@/services/VaultKeepsService.js';
+import { logger } from '@/utils/Logger.js';
+import { Pop } from '@/utils/Pop.js';
+import { computed, ref } from 'vue';
 
 
 const keep = computed(() => AppState.activeKeep)
 const vaults = computed(() => AppState.myVaults)
+
+const editableKeepData = ref({
+  vaultId: ''
+})
+
+async function addKeepToVault() {
+  try {
+    await vaultKeepsService.addKeepToVault(editableKeepData.value.vaultId, AppState.activeKeep?.id)
+  }
+  catch (error) {
+    Pop.error(error, 'Could not add keep to vault')
+    logger.error('COULD NOT ADD KEEP TO VAULT', error)
+  }
+}
 
 </script>
 
@@ -40,14 +57,16 @@ const vaults = computed(() => AppState.myVaults)
                   </div>
                 </div>
                 <div class="position-absolute form-position d-flex justify-content-between flex-grow-1">
-                  <form>
+                  <form @submit.prevent="addKeepToVault()">
                     <div class="d-flex gap-2">
-                      <select class="form-select w-50" aria-label="Default select example">
+                      <select v-model="editableKeepData.vaultId" class="form-select w-50"
+                        aria-label="Default select example">
                         <option selected disabled>Select Vault to Save to</option>
-                        <option v-for="vault in vaults" :key="`my vaults ` + vault.id" :value="vault?.id">{{ vault?.name
-                          }}</option>
+                        <option v-for="vault in vaults" :key="`my vaults ` + vault.id" :value="vault?.id">
+                          {{ vault?.name }}
+                        </option>
                       </select>
-                      <button class="btn btn-primary">Save</button>
+                      <button class="btn btn-primary" type="submit" title="Add keep to vault selected">Save</button>
                     </div>
                   </form>
                   <RouterLink v-if="keep" :to="{ name: 'Profile', params: { profileId: keep?.creator.id } }">

@@ -93,7 +93,7 @@ async function getKeepsForVault() {
             <p class="fs-5">by {{ vault.creator.name }}</p>
           </div>
         </div>
-        <div v-if="vault?.creatorId == account?.id" class="d-flex justify-content-between mt-2">
+        <div v-if="vault?.creatorId == account?.id" class="d-flex justify-content-between mt-3">
           <div>
             <button @click="deleteVault()" class="btn btn-danger" :title="`Delete the ${vault?.name} vault`">Delete
               Vault</button>
@@ -115,7 +115,7 @@ async function getKeepsForVault() {
         </div>
       </div>
       <div class="col-12">
-        <div class="masonry-container">
+        <div class="masonry-container mt-4">
           <div v-for="keep in keeps" :key="keep.id">
             <VaultKeepCard :keep="keep" />
           </div>

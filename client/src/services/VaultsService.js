@@ -33,6 +33,7 @@ class VaultsService {
     const response = await api.post('api/vaults', vaultData)
     // logger.log('here is your vault', response.data)
     const vault = new Vault(response.data)
+    AppState.myVaults.push(vault)
     if (AppState.activeProfile === null || vault.creatorId === AppState.activeProfile.id) {
       AppState.vaults.push(vault)
     }
