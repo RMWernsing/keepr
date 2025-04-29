@@ -32,8 +32,6 @@ function increaseKept() {
 
 
 <template>
-  <!-- Modal -->
-  <!-- TODO fix the styling of the whole modal. it doesn't look great ☹️ -->
   <div class="modal fade" id="keepDetailsModal" tabindex="-1" aria-labelledby="keepDetailsModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-xl modal-fullscreen-md-down">
@@ -47,11 +45,11 @@ function increaseKept() {
                 <div class="d-flex justify-content-between mt-3">
                   <div>
                   </div>
-                  <div>
+                  <div class="fs-4">
                     <span class="mdi mdi-eye me-2" :title="`view count is ${keep?.views}`"></span>
                     <span class="me-2" :title="`view count is ${keep?.views}`">{{ keep?.views }}</span>
-                    <span class="mdi mdi-lock me-2"></span>
-                    <span>{{ keep?.kept }}</span>
+                    <span class="mdi mdi-lock me-2" :title="`kept count is ${keep?.kept}`"></span>
+                    <span :title="`kept count is ${keep?.kept}`">{{ keep?.kept }}</span>
                   </div>
                   <button type="button" class="btn-close text-end" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -64,9 +62,9 @@ function increaseKept() {
                 <div class="position-absolute form-position d-flex justify-content-between flex-grow-1">
                   <form v-if="account" @submit.prevent="addKeepToVault()">
                     <div class="d-flex gap-2">
-                      <select v-model="editableKeepData.vaultId" class="form-select w-50"
+                      <select v-model="editableKeepData.vaultId" class="form-select form-width"
                         aria-label="Default select example">
-                        <option selected disabled>Select Vault to Save to</option>
+                        <option selected disabled>Select Vault</option>
                         <option v-for="vault in vaults" :key="`my vaults ` + vault.id" :value="vault?.id">
                           {{ vault?.name }}
                         </option>
@@ -75,17 +73,15 @@ function increaseKept() {
                         title="Add keep to vault selected">Save</button>
                     </div>
                   </form>
-                  <RouterLink v-if="keep" :to="{ name: 'Profile', params: { profileId: keep?.creator.id } }">
-                    <div :title="`navigate to ${keep.creator.name}'s profile page'`" data-bs-dismiss="modal"
-                      class="d-flex gap-2 flex-wrap no-underline">
-                      <img class="profile-img" :src="keep?.creator.picture"
-                        :alt="`Profile picture for ${keep?.creator.name}`">
-                      <span class="profile-name text-dark">{{ keep?.creator.name }}</span>
-                    </div>
-                  </RouterLink>
-                  <div>
-                  </div>
                 </div>
+                <RouterLink v-if="keep" :to="{ name: 'Profile', params: { profileId: keep?.creator.id } }">
+                  <div :title="`navigate to ${keep.creator.name}'s profile page'`" data-bs-dismiss="modal"
+                    class="d-flex gap-2 flex-wrap img-position position-absolute">
+                    <img class="profile-img" :src="keep?.creator.picture"
+                      :alt="`Profile picture for ${keep?.creator.name}`">
+                    <span class="profile-name text-dark">{{ keep?.creator.name }}</span>
+                  </div>
+                </RouterLink>
               </div>
             </div>
           </div>
@@ -105,6 +101,33 @@ function increaseKept() {
 
 .form-position {
   bottom: 14px;
+}
+
+.form-width {
+  width: 15rem;
+}
+
+@media (max-width: 1199px) {
+  .form-width {
+    width: 10rem;
+  }
+}
+
+@media (max-width: 991px) {
+  .form-width {
+    width: 12rem;
+  }
+
+  .img-position {
+    width: 92%;
+    height: 12%;
+  }
+}
+
+
+.img-position {
+  bottom: 10px;
+  right: 10px;
 }
 
 .mobile-margin {
@@ -133,6 +156,11 @@ a {
 @media (max-width: 769px) {
   .mobile-margin {
     margin-bottom: 8rem;
+  }
+
+  .img-position {
+    width: 20%;
+    height: 15%;
   }
 }
 </style>

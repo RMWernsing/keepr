@@ -36,8 +36,6 @@ async function deleteVaultKeep(vaultKeepId) {
 
 
 <template>
-  <!-- Modal -->
-  <!-- TODO fix the styling of the whole modal. it doesn't look great ☹️ -->
   <div class="modal fade" id="vaultKeepDetailsModal" tabindex="-1" aria-labelledby="vaultKeepDetailsModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-xl modal-fullscreen-md-down">
@@ -69,17 +67,15 @@ async function deleteVaultKeep(vaultKeepId) {
                   <div data-bs-dismiss="modal" @click="deleteVaultKeep(keep.vaultKeepId)"
                     v-if="account?.id == vault?.creatorId">
                   </div>
-                  <RouterLink v-if="keep" :to="{ name: 'Profile', params: { profileId: keep?.creator.id } }">
-                    <div :title="`navigate to ${keep.creator.name}'s profile page'`" data-bs-dismiss="modal"
-                      class="d-flex gap-2 flex-wrap no-underline">
-                      <img class="profile-img" :src="keep?.creator.picture"
-                        :alt="`Profile picture for ${keep?.creator.name}`">
-                      <span class="profile-name text-dark">{{ keep?.creator.name }}</span>
-                    </div>
-                  </RouterLink>
-                  <div>
-                  </div>
                 </div>
+                <RouterLink v-if="keep" :to="{ name: 'Profile', params: { profileId: keep?.creator.id } }">
+                  <div :title="`navigate to ${keep.creator.name}'s profile page'`" data-bs-dismiss="modal"
+                    class="d-flex gap-2 flex-wrap no-underline img-position position-absolute">
+                    <img class="profile-img" :src="keep?.creator.picture"
+                      :alt="`Profile picture for ${keep?.creator.name}`">
+                    <span class="profile-name text-dark">{{ keep?.creator.name }}</span>
+                  </div>
+                </RouterLink>
               </div>
             </div>
           </div>
@@ -111,6 +107,11 @@ async function deleteVaultKeep(vaultKeepId) {
   aspect-ratio: 1/1;
   border-radius: 50%;
   object-fit: cover;
+}
+
+.img-position {
+  bottom: 10px;
+  right: 10px;
 }
 
 .profile-name {
