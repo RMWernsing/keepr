@@ -52,7 +52,7 @@ async function deleteKeep(keep) {
       <span data-bs-toggle="modal" data-bs-target="#keepDetailsModal" class="overlay-text fw-bold text-light">{{
         keep.name }}</span>
       <img class="overlay-img d-none d-md-block" :src="keep.creator.picture"
-        :alt="`Profile picture for ${keep.creator.name}`">
+        :alt="`Profile picture for ${keep.creator.name}`" :title="keep?.creator.name">
     </div>
     <span v-if="keep?.creatorId == account?.id" :title="`Delete ${keep?.name}`"
       class="text-danger fs-4 mdi mdi-close position-absolute overlay-delete-button" @click="deleteKeep(keep)"></span>
