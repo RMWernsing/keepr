@@ -1,17 +1,86 @@
-# Use the official Node.js image as the base image
-FROM node:23-alpine
+# syntax=docker/dockerfile:1
 
-# Set the working directory inside the container
-WORKDIR /app
+# Comments are provided throughout this file to help you get started.
+# If you need more help, visit the Dockerfile reference guide at
+# https://docs.docker.com/go/dockerfile-reference/
 
-# Copy the package.json and package-lock.json files to the working directory
-COPY package*.json ./
+# Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
 
-# Install the application dependencies
-RUN npm install --production
+################################################################################
 
-# Copy the application code to the working directory
-COPY . .
+# Learn about building .NET container images:
+# https://github.com/dotnet/dotnet-docker/blob/main/samples/README.md
 
-# Start the application
-CMD ["npm", "start"]
+# Create a stage for building the application.
+# FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:.9-alpine AS build
+
+# COPY . /source
+
+# WORKDIR /source
+
+# This is the architecture you’re building for, which is passed in by the builder.
+# Placing it here allows the previous steps to be cached across architectures.
+# ARG TARGETARCH
+
+# Build the application.
+# Leverage a cache mount to /root/.nuget/packages so that subsequent builds don't have to re-download packages.
+# If TARGETARCH is "amd64", replace it with "x64" - "x64" is .NET's canonical name for this and "amd64" doesn't
+#   work in .NET 6.0.
+# RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+#     dotnet publish -a ${TARGETARCH/amd64/x64} --use-current-runtime --self-contained false -o /app
+
+# If you need to enable globalization and time zones:
+# https://github.com/dotnet/dotnet-docker/blob/main/samples/enable-globalization.md
+################################################################################
+# Create a new stage for running the application that contains the minimal
+# runtime dependencies for the application. This often uses a different base
+# image from the build stage where the necessary files are copied from the build
+# stage.
+#
+# The example below uses an aspnet alpine image as the foundation for running the app.
+# It will also use whatever happens to be the most recent version of that tag when you
+# build your Dockerfile. If reproducibility is important, consider using a more specific
+# version (e.g., aspnet:7.0.10-alpine-3.18),
+# or SHA (e.g., mcr.microsoft.com/dotnet/aspnet@sha256:f3d99f54d504a21d38e4cc2f13ff47d67235efeeb85c109d3d1ff1808b38d034).
+# FROM mcr.microsoft.com/dotnet/aspnet:.9-alpine AS final
+# WORKDIR /app
+
+# Copy everything needed to run the app from the "build" stage.
+# COPY --from=build /app .
+
+# Create a non-privileged user that the app will run under.
+# See https://docs.docker.com/go/dockerfile-user-best-practices/
+# ARG UID=10001
+# RUN adduser \
+#     --disabled-password \
+#     --gecos "" \
+#     --home "/nonexistent" \
+#     --shell "/sbin/nologin" \
+#     --no-create-home \
+#     --uid "${UID}" \
+#     appuser
+# USER appuser
+
+# ENTRYPOINT ["dotnet", "romans_portfolio.dll"]
+
+FROM --platform=linux/amd64 node:23-slim AS client-builder
+
+# Set the working directory in the client builder container
+WORKDIR /app/client
+
+# Copy the client-side package.json and package-lock.json to the client builder container
+COPY client/package*.json ./
+
+# Install client application dependencies
+RUN npm install
+
+# Copy the client application source code to the client builder container
+COPY client ./
+
+# Build the client-side code
+RUN npm run build
+
+FROM busybox
+WORKDIR /srv
+COPY --from=client-builder /app/client/dist /srv
+CMD ["sleep", "infinity"]
