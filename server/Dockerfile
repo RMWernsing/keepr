@@ -38,4 +38,4 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 COPY --from=build-env /app/server/out .
-ENTRYPOINT ["dotnet", "romans_portfolio.dll"]
+ENTRYPOINT ["dotnet", "keepr.dll"]

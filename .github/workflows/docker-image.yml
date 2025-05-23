@@ -28,7 +28,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
+          username: ${{ github.actor }}x  
           password: ${{ secrets.GHCR_PAT }}
 
       - name: Convert owner and repo to lowercase
